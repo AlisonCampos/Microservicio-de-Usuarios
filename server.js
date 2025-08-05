@@ -5,7 +5,9 @@ const cors = require('cors'); // <-- AÑADE ESTO
 const authRoutes = require('./routes/auth');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000' })); // <-- Y ESTO
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*'
+})); // <-- Y ESTO
 app.use(express.json());
 
 // Conexión a MongoDB Atlas

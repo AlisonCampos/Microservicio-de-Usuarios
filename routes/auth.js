@@ -56,4 +56,19 @@ router.get('/users', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ error: 'Contraseña incorrecta.' });
+
+    res.json({ message: 'Login exitoso.' });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
 module.exports = router;
